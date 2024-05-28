@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    image: my-spring-boot:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      - JAVA_OPTS=-Xmx512m -Xms102m
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: always
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_DB=makara-tester-v5
+    ports:
+      - "5434:5434"
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+volumes:
+  postgres-data:
